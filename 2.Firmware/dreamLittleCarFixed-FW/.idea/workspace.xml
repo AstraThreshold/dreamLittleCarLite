@@ -20,11 +20,46 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="">
+    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="取消PID算法并回归原始巡线模式">
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-06-05T16-11-41-0348.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Inc/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Inc/main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Src/gpio.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/gpio.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/stm32f103c8_blue_pill.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/stm32f103c8_blue_pill.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/ASM.includecache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/gpio.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/stm32f1xx_hal_msp.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/stm32f1xx_it.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/syscalls.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/system_stm32f1xx.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/tim.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/usart.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c.obj.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/compiler_depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dreamLittleCarFixed-FW.ioc" beforeDir="false" afterPath="$PROJECT_DIR$/dreamLittleCarFixed-FW.ioc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,12 +79,16 @@
     <option name="minorVersion" value="1.1" />
   </component>
   <component name="ProjectId" id="2Qkts2WODkkhsv9ktaWIJhAUM8n" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
@@ -113,8 +152,19 @@
       <workItem from="1685953564627" duration="21000" />
       <workItem from="1685953600991" duration="73000" />
       <workItem from="1685953702258" duration="11000" />
-      <workItem from="1685953781967" duration="210000" />
+      <workItem from="1685953781967" duration="5605000" />
+      <workItem from="1685959574166" duration="913000" />
+      <workItem from="1685970133747" duration="6156000" />
+      <workItem from="1685981184839" duration="344000" />
     </task>
+    <task id="LOCAL-00001" summary="取消PID算法并回归原始巡线模式">
+      <created>1685954185812</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1685954185812</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,5 +186,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="取消PID算法并回归原始巡线模式" />
+    <option name="LAST_COMMIT_MESSAGE" value="取消PID算法并回归原始巡线模式" />
   </component>
 </project>

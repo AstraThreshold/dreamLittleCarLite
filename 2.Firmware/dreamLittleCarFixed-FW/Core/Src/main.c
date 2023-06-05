@@ -49,6 +49,9 @@ uint8_t speed = 0;
 uint8_t tickFlag = 0;
 uint16_t pwmVal = 1;
 
+float kp = 30;
+float ki = 1.3;
+float kd = 3.5;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -62,11 +65,11 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void littleCarMove();
 void goForward();
-void goBack();
 void turnLeft();
 void turnRight();
 void stopAll();
 
+float pidOutput();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -105,7 +108,7 @@ int main(void)
   MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  pwmVal = 280;
+  pwmVal = 225;
 
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
@@ -130,7 +133,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
     while ((msg != '1') && HAL_UART_Receive(&huart1,&msg,1,0) == HAL_OK);
 
-    if (msg == '1')
+    if (msg == '1' || !HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin))
     {
       ifMsgGet = 1;
       msg = 0;
@@ -138,7 +141,7 @@ int main(void)
     if (ifMsgGet)
     {
       HAL_UART_Transmit(&huart1, "Get!\r\n", sizeof("Get!\r\n"), 20);
-      while ((msg != '1') && HAL_UART_Receive(&huart1, &speed, 1, 0) == HAL_OK);
+      //while ((msg != '1') && HAL_UART_Receive(&huart1, &speed, 1, 0) == HAL_OK);
       ifMsgGet = 0;
       //goForward();
       littleCarMove();
@@ -189,9 +192,9 @@ void SystemClock_Config(void)
 
 void goForward()
 {
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?
-  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-70);    //修改比较值，修改占空�?
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�??
+  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�??
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal+5);    //修改比较值，修改占空�??
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -209,22 +212,49 @@ void stopAll()
 void turnLeft()
 {
   //电机2反转
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-50);    //修改比较值，修改占空�?
+//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-50);    //修改比较值，修改占空�??
+//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal+30);    //修改比较值，修改占空�??
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 1);
-  HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 0);
+  HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
+  while (TRACK2 == 1);
 }
 
 void turnRight()
 {
   //电机1反转
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-100);    //修改比较值，修改占空�?
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal+40);    //修改比较值，修改占空�?
-  HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 0);
+//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�??
+//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-30);    //修改比较值，修改占空�??
+  HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
+  while (TRACK3 == 1);
+}
+
+float pidOutput()
+{
+  float err, errPre;
+  static float integral;
+  float output;
+
+  if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 0 && TRACK4 == 1 && TRACK5 == 1) err = 0;
+
+  else if (TRACK1 == 1 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) err = -1;
+  else if (TRACK1 == 0 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) err = -2;
+  else if (TRACK1 == 0 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) err = -3;
+
+  else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 0 && TRACK5 == 1) err = 1;
+  else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 0 && TRACK5 == 0) err = 2;
+  else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 0) err = 3;
+
+  else err = 0;
+
+  integral += err;
+  output = kp * err + ki * integral + kd * (err - errPre);
+  errPre = err;
+  return output;
 }
 
 void littleCarMove()
@@ -241,15 +271,18 @@ void littleCarMove()
       return;
     }
 
-    if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 0 && TRACK4 == 1 && TRACK5 == 1) goForward();
+    if (TRACK2 == 0 && TRACK3 == 1)  turnLeft();
+    else if (TRACK2 == 1 && TRACK3 == 0) turnRight();
 
-    else if (TRACK1 == 1 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
-    else if (TRACK1 == 0 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
-    else if (TRACK1 == 0 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
+    else if (TRACK1 == 0 || TRACK4 == 0 || TRACK5 == 0)
+    {
+      stopAll();
+      if (TRACK1 == 0)  turnLeft();
+      if (TRACK4 == 0)  turnRight();
+      if (TRACK5 == 0)  turnRight();
+    }
+    else goForward();
 
-    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 0 && TRACK5 == 1) turnRight();
-    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 0) turnRight();
-    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnRight();
 
     if (tickFlag == 1)
     {
