@@ -20,9 +20,34 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="彻底死心，巡线部分定稿，开始编写SR04部分函数">
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-06-05T18-38-57-0094.json" afterDir="false" />
+    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="仍然不死心，SR04测距已经成功，但是不能测距急停，准备调整巡线算法">
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/ASM.includecache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/gpio.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/stm32f1xx_hal_msp.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/stm32f1xx_it.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/syscalls.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/system_stm32f1xx.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/tim.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/usart.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c.obj.d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/compiler_depend.internal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/depend.internal" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Inc/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Inc/main.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" afterDir="false" />
@@ -146,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685991997442</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="仍然不死心，SR04测距已经成功，但是不能测距急停，准备调整巡线算法">
+      <created>1685995677650</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1685995677650</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +206,7 @@
     <MESSAGE value="取消PID算法并回归原始巡线模式" />
     <MESSAGE value="他妈的不死心，仍然想尝试PID算法，进行备份" />
     <MESSAGE value="彻底死心，巡线部分定稿，开始编写SR04部分函数" />
-    <option name="LAST_COMMIT_MESSAGE" value="彻底死心，巡线部分定稿，开始编写SR04部分函数" />
+    <MESSAGE value="仍然不死心，SR04测距已经成功，但是不能测距急停，准备调整巡线算法" />
+    <option name="LAST_COMMIT_MESSAGE" value="仍然不死心，SR04测距已经成功，但是不能测距急停，准备调整巡线算法" />
   </component>
 </project>

@@ -54,7 +54,6 @@ extern uint8_t tickFlag;  //per 100ms turn 1
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -97,7 +96,6 @@ void Error_Handler(void);
 #define SR04_TRIG_Pin GPIO_PIN_6
 #define SR04_TRIG_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

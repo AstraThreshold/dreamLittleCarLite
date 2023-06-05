@@ -58,6 +58,10 @@ float ki = 1.3;
 float kd = 3.5;
 
 extern uint16_t msHcCount = 0;
+
+uint16_t cntWhile;
+
+uint8_t firstTimeRun = 1;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -70,7 +74,7 @@ extern uint16_t msHcCount = 0;
 void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
-void littleCarMove(float distant);
+void littleCarMove();
 
 void goForward();
 
@@ -176,7 +180,7 @@ int main(void)
       ifMsgGet = 0;
       //goForward();
 
-      littleCarMove(sr04GetDistantAfterFilter(5));
+      littleCarMove();
     }
   }
   /* USER CODE END 3 */
@@ -258,24 +262,22 @@ void turnLeft()
 {
   //电机2反转
 //    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-50);    //修改比较值，修改占空�????
-//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal+30);    //修改比较值，修改占空�????
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-45);    //修改比较值，修改占空�????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
-  while (TRACK2 == 1);
 }
 
 void turnRight()
 {
   //电机1反转
 //  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�????
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-30);    //修改比较值，修改占空�????
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
-  while (TRACK3 == 1);
 }
 
 void sr04Init()
@@ -347,7 +349,7 @@ float pidOutput()
   return output;
 }
 
-void littleCarMove(float distant)
+void littleCarMove()
 {
   while (1)
   {
@@ -361,37 +363,73 @@ void littleCarMove(float distant)
       return;
     }
 
-    if (distant <= 20)
+    if (cntWhile % 10 == 0)
     {
-      msg = 0;
-      HAL_UART_Transmit(&huart1, "Too Close!!!\r\n", sizeof("Too Close!!!\r\n"), 13);
-      stopAll();
-      return;
+      float distant = sr04GetDistantAfterFilter(5);
+      if (distant < 20)
+      {
+        msg = 0;
+        HAL_UART_Transmit(&huart1, "Too Close! Stop!\r\n", sizeof("Too Close! Stop!\r\n"), 17);
+
+        stopAll();
+        return;
+      }
     }
 
-    if (TRACK2 == 0 && TRACK3 == 1)
+    if (firstTimeRun)
     {
-      //stopAll();
-      turnLeft();
-    } else if (TRACK2 == 1 && TRACK3 == 0)
-    {
-      //stopAll();
-      turnRight();
-    } else if (TRACK1 == 0 || TRACK4 == 0 || TRACK5 == 0)
-    {
-      stopAll();
-      HAL_Delay(1);
-      if (TRACK1 == 0) turnLeft();
-      if (TRACK4 == 0) turnRight();
-      if (TRACK5 == 0) turnRight();
-    } else goForward();
+      goForward();
+      HAL_Delay(1500);
+      firstTimeRun = 0;
+    }
 
+    if (TRACK2 == 0 || TRACK4 == 0)
+    {
+      if (TRACK2 == 0)
+      {
+        HAL_Delay(10);
+        if (TRACK2 == 0)
+        {
+          turnLeft();
+        }
+      }
+      if (TRACK4 == 0)
+      {
+        HAL_Delay(10);
+        if (TRACK4 == 0)
+        {
+          turnRight();
+        }
+      }
+    } else if (TRACK1 == 0 || TRACK5 == 0)
+    {
+      if (TRACK1 == 0)
+      {
+        HAL_Delay(11);
+        if (TRACK1 == 0)
+        {
+          turnLeft();
+          while (TRACK3 == 1);
+        }
+      }
+
+      if (TRACK5 == 0)
+      {
+        HAL_Delay(11);
+        if (TRACK5 == 0)
+        {
+          turnRight();
+          while (TRACK3 == 1);
+        }
+      }
+    } else goForward();
 
     if (tickFlag == 1)
     {
       HAL_UART_Transmit(&huart1, "Running...\r\n", sizeof("Running...\r\n"), 8);
       tickFlag = 0;
     }
+    cntWhile++;
   }
 }
 /* USER CODE END 4 */
