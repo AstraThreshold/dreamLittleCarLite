@@ -41,23 +41,6 @@ CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/gpio.c.obj
 
 CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Core/Src/main.c
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/stdio.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/_ansi.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/newlib.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/config.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/ieeefp.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/features.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/cdefs.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdarg.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/reent.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/_ansi.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_types.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/_types.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/lock.h
- D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/stdio.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Core/Inc/main.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Core/Inc/stm32f1xx_hal_conf.h
@@ -68,6 +51,9 @@ CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/CMSIS/Include/core_cm3.h
  D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdint.h
  D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/stdint.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/features.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
  D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_intsup.h
  D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/CMSIS/Include/cmsis_version.h
@@ -75,6 +61,7 @@ CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/CMSIS/Include/cmsis_gcc.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h

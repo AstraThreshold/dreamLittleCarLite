@@ -17,7 +17,6 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <stdio.h>
 #include "main.h"
 #include "tim.h"
 #include "usart.h"
@@ -48,11 +47,8 @@ uint8_t ifMsgGet = 0;
 uint8_t msg = 0;
 uint8_t speed = 0;
 uint8_t tickFlag = 0;
-uint16_t pwmVal = 1;   //PWM占空�?
+uint16_t pwmVal = 1;
 
-float kp = 25;
-float ki = 0;
-float kd = 5;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -71,7 +67,6 @@ void turnLeft();
 void turnRight();
 void stopAll();
 
-float pidOutput();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -110,7 +105,7 @@ int main(void)
   MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  pwmVal = 230;
+  pwmVal = 280;
 
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
@@ -125,8 +120,8 @@ int main(void)
   sprintf(powerMsg, "%.2f", 1000000.0 / pwmVal / 10000.0);
   HAL_UART_Transmit(&huart1, powerMsg, sizeof(powerMsg), 20);
 
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-30);
 
   while (1)
   {
@@ -142,7 +137,7 @@ int main(void)
     }
     if (ifMsgGet)
     {
-      HAL_UART_Transmit(&huart1, "Get! Speed?(1-9)\r\n", sizeof("Get! Speed?(1-9)\r\n"), 20);
+      HAL_UART_Transmit(&huart1, "Get!\r\n", sizeof("Get!\r\n"), 20);
       while ((msg != '1') && HAL_UART_Receive(&huart1, &speed, 1, 0) == HAL_OK);
       ifMsgGet = 0;
       //goForward();
@@ -191,35 +186,12 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-float pidOutput()
-{
-  float err, errPre;
-  static float integral;
-  float output;
-
-  if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 0 && TRACK4 == 1 && TRACK5 == 1) err = 0;
-
-  else if (TRACK1 == 1 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) err = -1;
-  else if (TRACK1 == 0 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) err = -2;
-  else if (TRACK1 == 0 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) err = -3;
-
-  else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 0 && TRACK5 == 1) err = 1;
-  else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 0 && TRACK5 == 0) err = 2;
-  else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 0) err = 3;
-
-  else err = 0;
-
-  integral += err;
-  output = kp * err + ki * integral + kd * (err - errPre);
-  errPre = err;
-  return output;
-}
 
 void goForward()
 {
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?
-//  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal+8);    //修改比较值，修改占空�?
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?
+  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-70);    //修改比较值，修改占空�?
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -237,8 +209,7 @@ void stopAll()
 void turnLeft()
 {
   //电机2反转
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-40);    //修改比较值，修改占空�?
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-5);    //修改比较值，修改占空�?
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-50);    //修改比较值，修改占空�?
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 1);
@@ -248,7 +219,8 @@ void turnLeft()
 void turnRight()
 {
   //电机1反转
-  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-55);    //修改比较值，修改占空�?
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-100);    //修改比较值，修改占空�?
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal+40);    //修改比较值，修改占空�?
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 0);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -269,21 +241,15 @@ void littleCarMove()
       return;
     }
 
-//    if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 0 && TRACK4 == 1 && TRACK5 == 1) goForward();
-//
-//    else if (TRACK1 == 1 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
-//    else if (TRACK1 == 0 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
-//    else if (TRACK1 == 0 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
-//
-//    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 0 && TRACK5 == 1) turnRight();
-//    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 0) turnRight();
-//    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnRight();
+    if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 0 && TRACK4 == 1 && TRACK5 == 1) goForward();
 
-    goForward();
+    else if (TRACK1 == 1 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
+    else if (TRACK1 == 0 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
+    else if (TRACK1 == 0 && TRACK2 == 0 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnLeft();
 
-    float tempFlag = pidOutput();
-      __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal - tempFlag);
-      __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal + tempFlag + 10);
+    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 0 && TRACK5 == 1) turnRight();
+    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 0) turnRight();
+    else if (TRACK1 == 1 && TRACK2 == 1 && TRACK3 == 1 && TRACK4 == 1 && TRACK5 == 1) turnRight();
 
     if (tickFlag == 1)
     {
