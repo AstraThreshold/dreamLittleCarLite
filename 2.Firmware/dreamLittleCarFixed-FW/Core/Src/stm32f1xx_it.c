@@ -55,7 +55,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern UART_HandleTypeDef huart2;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -191,8 +191,8 @@ void SysTick_Handler(void)
   {
     tickCount = 0;
     tickFlag = 1;
+    HAL_GPIO_TogglePin(RGB1_GPIO_Port, RGB1_Pin);
     HAL_GPIO_TogglePin(RGB2_GPIO_Port, RGB2_Pin);
-    HAL_GPIO_TogglePin(RGB3_GPIO_Port, RGB3_Pin);
   }
   /* USER CODE END SysTick_IRQn 1 */
 }
@@ -203,6 +203,30 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f1xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles USART2 global interrupt.
+  */
+void USART2_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART2_IRQn 0 */
+
+  /* USER CODE END USART2_IRQn 0 */
+  HAL_UART_IRQHandler(&huart2);
+  /* USER CODE BEGIN USART2_IRQn 1 */
+  if(offSet == 3){ //以防溢出
+    offSet = 0;
+  }
+
+  //将接收到的单个字符扔到自定义字符串缓冲中，形成字符串
+  rxBuffer[offSet++] = rxMsg;
+
+  rxFlag = 1;
+
+  //实现多次数据返回
+  HAL_UART_Receive_IT(&huart2, (uint8_t *)&rxMsg, 1);
+  /* USER CODE END USART2_IRQn 1 */
+}
 
 /* USER CODE BEGIN 1 */
 

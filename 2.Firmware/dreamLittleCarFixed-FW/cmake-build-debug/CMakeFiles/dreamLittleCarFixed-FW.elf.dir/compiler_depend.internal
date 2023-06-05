@@ -92,6 +92,10 @@ CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj
  D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/_types.h
  D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/lock.h
  D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/stdio.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/string.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_locale.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/strings.h
+ D:/STM32CubeToolChains/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/string.h
 
 CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/stm32f1xx_hal_msp.c.obj
  D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/Core/Src/stm32f1xx_hal_msp.c

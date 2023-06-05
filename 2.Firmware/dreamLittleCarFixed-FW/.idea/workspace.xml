@@ -20,9 +20,27 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="巡线算法调整基本成功，同时调通超声波避障，每10次Loop扫描一次，并蓝牙输出信息">
+    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="通过串口解码出红外遥控的通信报文，准备加入红外遥控功能">
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-06-05T21-54-04-0001.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Inc/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Inc/main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Inc/stm32f1xx_it.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Inc/stm32f1xx_it.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Inc/usart.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Inc/usart.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Src/gpio.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/gpio.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Src/stm32f1xx_it.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/stm32f1xx_it.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/Src/usart.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/usart.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-06-05T18-38-57-0094.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.25.2/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/Core/Src/main.c.obj.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/compiler_depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/dreamLittleCarFixed-FW.elf.dir/compiler_depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dreamLittleCarFixed-FW.ioc" beforeDir="false" afterPath="$PROJECT_DIR$/dreamLittleCarFixed-FW.ioc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685998998619</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="通过串口解码出红外遥控的通信报文，准备加入红外遥控功能">
+      <created>1686000722490</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1686000722490</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,6 +210,7 @@
     <MESSAGE value="彻底死心，巡线部分定稿，开始编写SR04部分函数" />
     <MESSAGE value="仍然不死心，SR04测距已经成功，但是不能测距急停，准备调整巡线算法" />
     <MESSAGE value="巡线算法调整基本成功，同时调通超声波避障，每10次Loop扫描一次，并蓝牙输出信息" />
-    <option name="LAST_COMMIT_MESSAGE" value="巡线算法调整基本成功，同时调通超声波避障，每10次Loop扫描一次，并蓝牙输出信息" />
+    <MESSAGE value="通过串口解码出红外遥控的通信报文，准备加入红外遥控功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="通过串口解码出红外遥控的通信报文，准备加入红外遥控功能" />
   </component>
 </project>

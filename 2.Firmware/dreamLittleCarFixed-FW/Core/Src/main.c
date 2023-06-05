@@ -20,6 +20,7 @@
   * 8 -> 00 FF 52 -> BACK
   * 4 -> 00 FF 08 -> LEFT
   * 6 -> 00 FF 5A -> RIGHT
+  * play -> 00 FF 43 -> GO
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
@@ -31,6 +32,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,6 +70,15 @@ extern uint16_t msHcCount = 0;
 uint16_t cntWhile;
 
 uint8_t firstTimeRun = 1;
+
+uint8_t rxBuffer[4], rxFlag; // 4 bits buffer enough
+uint8_t rxMsg;
+uint8_t offSet;
+
+uint8_t carMode = 0; //0->bluetooth 1->IR
+
+uint8_t irStart = 0;
+uint8_t irStop = 0;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -83,6 +94,8 @@ void SystemClock_Config(void);
 void littleCarMove();
 
 void goForward();
+
+void goBack();
 
 void turnLeft();
 
@@ -105,7 +118,6 @@ void delayus(uint32_t nus);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /**
@@ -140,12 +152,15 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   MX_TIM2_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
   pwmVal = 235;
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+
+  HAL_UART_Receive_IT(&huart2, (uint8_t *)&rxMsg, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -157,34 +172,67 @@ int main(void)
   sprintf(powerMsg, "%.2f", 1000000.0 / pwmVal / 10000.0);
   HAL_UART_Transmit(&huart1, powerMsg, sizeof(powerMsg), 20);
 
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 30);
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 30);
 
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    //float sr04Distant = sr04GetDistantAfterFilter(5);
 
-    //char distantStr[10] = "";
-    //sprintf(distantStr, "%.2f", sr04Distant);
-    //HAL_UART_Transmit(&huart1, distantStr, sizeof(distantStr), 8);
+    if(rxFlag == 1) //receive message
+    {
+      //switch mode
+      //HAL_UART_Transmit(&huart1, &rxBuffer[2], sizeof(rxBuffer[2]), 13);
+
+      if (rxBuffer[2] == 0x46)
+      {
+        carMode++;
+        if (carMode > 1)  carMode = 0;
+        if (carMode == 1) HAL_UART_Transmit(&huart1, "IR Mode!\r\n", sizeof("IR Mode!\r\n"), 20);
+        if (carMode == 0) HAL_UART_Transmit(&huart1, "BT Mode!\r\n", sizeof("BT Mode!\r\n"), 20);
+      }
+
+      //stop
+      if (rxBuffer[2] == 0x07)
+      {
+        stopAll();
+        irStop = 1;
+        HAL_UART_Transmit(&huart1, "Stop By User.\r\n", sizeof("Stop By User.\r\n"), 13);
+      }
+
+      //forward
+      if (rxBuffer[2] == 0x18 && carMode == 1) goForward();
+
+      //back
+      if (rxBuffer[2] == 0x52 && carMode == 1) goBack();
+
+      //turn right
+      if (rxBuffer[2] == 0x5A && carMode == 1) turnRight();
+
+      //turn left
+      if (rxBuffer[2] == 0x08 && carMode == 1) turnLeft();
+
+      //start
+      if (rxBuffer[2] == 0x43 && carMode == 0) irStart = 1;
+
+      memset(rxBuffer, '\0', sizeof(rxBuffer)); //clear buffer
+      rxFlag = 0;
+    }
 
     while ((msg != '1') && HAL_UART_Receive(&huart1, &msg, 1, 0) == HAL_OK);
 
-    if (msg == '1' || !HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin))
+    if (msg == '1' || !HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) || irStart == 1)
     {
+      if (irStart == 1) irStart = 0;  //if start by ir, reset flag
       ifMsgGet = 1;
       msg = 0;
     }
     if (ifMsgGet)
     {
       HAL_UART_Transmit(&huart1, "Get!\r\n", sizeof("Get!\r\n"), 20);
-      //while ((msg != '1') && HAL_UART_Receive(&huart1, &speed, 1, 0) == HAL_OK);
-
       ifMsgGet = 0;
-      //goForward();
 
       littleCarMove();
     }
@@ -234,7 +282,7 @@ void SystemClock_Config(void)
 void delayus(uint32_t nus)
 {
   uint16_t differ = 0xffff - nus - 5;
-  __HAL_TIM_SetCounter(&htim4, differ);
+    __HAL_TIM_SetCounter(&htim4, differ);
   HAL_TIM_Base_Start(&htim4);
 
   while (differ < 0xffff - 5)
@@ -247,13 +295,24 @@ void delayus(uint32_t nus)
 
 void goForward()
 {
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�????
-  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�????
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 9);    //修改比较值，修改占空�????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?????
+  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 9);    //修改比较值，修改占空�?????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
+}
+
+void goBack()
+{
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?????
+  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 9);    //修改比较值，修改占空�?????
+  HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 0);
+  HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
+  HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 1);
+  HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 0);
 }
 
 void stopAll()
@@ -267,8 +326,8 @@ void stopAll()
 void turnLeft()
 {
   //电机2反转
-//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-50);    //修改比较值，修改占空�????
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-45);    //修改比较值，修改占空�????
+//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-50);    //修改比较值，修改占空�?????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal - 45);    //修改比较值，修改占空�?????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 1);
@@ -278,8 +337,8 @@ void turnLeft()
 void turnRight()
 {
   //电机1反转
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�????
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�????
+//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�?????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 40);    //修改比较值，修改占空�?????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -361,7 +420,7 @@ void littleCarMove()
   {
     HAL_UART_Receive(&huart1, &msg, 1, 10);
 
-    if (msg == '3') //emergency stop
+    if (msg == '3') //emergency stop by usart
     {
       msg = 0;
       HAL_UART_Transmit(&huart1, "Stop By User.\r\n", sizeof("Stop By User.\r\n"), 13);
@@ -369,7 +428,7 @@ void littleCarMove()
       return;
     }
 
-    if (cntWhile % 10 == 0)
+    if (cntWhile % 10 == 0) //per 10 time scan distant, if too close, stop.
     {
       float distant = sr04GetDistantAfterFilter(5);
       if (distant < 20)
@@ -382,7 +441,14 @@ void littleCarMove()
       }
     }
 
-    if (firstTimeRun)
+    if (irStop == 1)
+    {
+      stopAll();
+      irStop = 0; //if stop by ir, reset flag.
+      return;
+    }
+
+    if (firstTimeRun) //run anyway when on power.
     {
       goForward();
       HAL_Delay(1500);

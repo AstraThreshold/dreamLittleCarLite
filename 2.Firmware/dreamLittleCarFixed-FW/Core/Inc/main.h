@@ -54,6 +54,9 @@ extern uint8_t tickFlag;  //per 100ms turn 1
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+extern uint8_t rxBuffer[4], rxFlag;
+extern uint8_t rxMsg;
+extern uint8_t offSet;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -63,8 +66,10 @@ void Error_Handler(void);
 #define RGB1_GPIO_Port GPIOA
 #define RGB2_Pin GPIO_PIN_1
 #define RGB2_GPIO_Port GPIOA
-#define RGB3_Pin GPIO_PIN_2
-#define RGB3_GPIO_Port GPIOA
+#define IR_RXD_Pin GPIO_PIN_2
+#define IR_RXD_GPIO_Port GPIOA
+#define IR_TXD_Pin GPIO_PIN_3
+#define IR_TXD_GPIO_Port GPIOA
 #define MOTOR2_CTRL1_Pin GPIO_PIN_6
 #define MOTOR2_CTRL1_GPIO_Port GPIOA
 #define MOTOR2_CTRL2_Pin GPIO_PIN_7
