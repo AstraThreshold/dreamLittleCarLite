@@ -101,6 +101,10 @@ void turnLeft();
 
 void turnRight();
 
+void turnLeftIR();
+
+void turnRightIR();
+
 void stopAll();
 
 float pidOutput();
@@ -209,10 +213,10 @@ int main(void)
       if (rxBuffer[2] == 0x52 && carMode == 1) goBack();
 
       //turn right
-      if (rxBuffer[2] == 0x5A && carMode == 1) turnRight();
+      if (rxBuffer[2] == 0x5A && carMode == 1) turnRightIR();
 
       //turn left
-      if (rxBuffer[2] == 0x08 && carMode == 1) turnLeft();
+      if (rxBuffer[2] == 0x08 && carMode == 1) turnLeftIR();
 
       //start
       if (rxBuffer[2] == 0x43 && carMode == 0) irStart = 1;
@@ -297,7 +301,7 @@ void goForward()
 {
     __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?????
   //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?????
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 9);    //修改比较值，修改占空�?????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 13);    //修改比较值，修改占空�?????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -334,11 +338,31 @@ void turnLeft()
   HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
 }
 
+void turnLeftIR()
+{
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?????
+  HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
+  HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
+  HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 1);
+  HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
+}
+
 void turnRight()
 {
   //电机1反转
 //  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�?????
     __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 40);    //修改比较值，修改占空�?????
+  HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
+  HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
+  HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
+  HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
+}
+
+void turnRightIR()
+{
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?????
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -420,6 +444,13 @@ void littleCarMove()
   {
     HAL_UART_Receive(&huart1, &msg, 1, 10);
 
+    if (irStop == 1)
+    {
+      stopAll();
+      irStop = 0; //if stop by ir, reset flag.
+      return;
+    }
+
     if (msg == '3') //emergency stop by usart
     {
       msg = 0;
@@ -439,13 +470,6 @@ void littleCarMove()
         stopAll();
         return;
       }
-    }
-
-    if (irStop == 1)
-    {
-      stopAll();
-      irStop = 0; //if stop by ir, reset flag.
-      return;
     }
 
     if (firstTimeRun) //run anyway when on power.
