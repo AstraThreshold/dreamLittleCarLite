@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,7 +70,7 @@ extern uint16_t msHcCount = 0;
 void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
-void littleCarMove();
+void littleCarMove(float distant);
 
 void goForward();
 
@@ -147,14 +147,20 @@ int main(void)
   sprintf(powerMsg, "%.2f", 1000000.0 / pwmVal / 10000.0);
   HAL_UART_Transmit(&huart1, powerMsg, sizeof(powerMsg), 20);
 
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 30);
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);
+  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 30);
 
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    //float sr04Distant = sr04GetDistantAfterFilter(5);
+
+    //char distantStr[10] = "";
+    //sprintf(distantStr, "%.2f", sr04Distant);
+    //HAL_UART_Transmit(&huart1, distantStr, sizeof(distantStr), 8);
+
     while ((msg != '1') && HAL_UART_Receive(&huart1, &msg, 1, 0) == HAL_OK);
 
     if (msg == '1' || !HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin))
@@ -166,9 +172,11 @@ int main(void)
     {
       HAL_UART_Transmit(&huart1, "Get!\r\n", sizeof("Get!\r\n"), 20);
       //while ((msg != '1') && HAL_UART_Receive(&huart1, &speed, 1, 0) == HAL_OK);
+
       ifMsgGet = 0;
       //goForward();
-      littleCarMove();
+
+      littleCarMove(sr04GetDistantAfterFilter(5));
     }
   }
   /* USER CODE END 3 */
@@ -216,16 +224,14 @@ void SystemClock_Config(void)
 void delayus(uint32_t nus)
 {
   uint16_t differ = 0xffff - nus - 5;
-  //设置定时�?2的技术初始�??
-    __HAL_TIM_SetCounter(&htim4, differ);
-  //�?启定时器
+  __HAL_TIM_SetCounter(&htim4, differ);
   HAL_TIM_Base_Start(&htim4);
 
   while (differ < 0xffff - 5)
   {
     differ = __HAL_TIM_GetCounter(&htim4);
   };
-  //关闭定时�?
+
   HAL_TIM_Base_Stop(&htim4);
 }
 
@@ -341,11 +347,7 @@ float pidOutput()
   return output;
 }
 
-/*
- 普�?�定时器实现us延时
-*/
-
-void littleCarMove()
+void littleCarMove(float distant)
 {
   while (1)
   {
@@ -354,7 +356,15 @@ void littleCarMove()
     if (msg == '3') //emergency stop
     {
       msg = 0;
-      HAL_UART_Transmit(&huart1, "Stop!!!\r\n", sizeof("Stop!!!\r\n"), 8);
+      HAL_UART_Transmit(&huart1, "Stop By User.\r\n", sizeof("Stop By User.\r\n"), 13);
+      stopAll();
+      return;
+    }
+
+    if (distant <= 20)
+    {
+      msg = 0;
+      HAL_UART_Transmit(&huart1, "Too Close!!!\r\n", sizeof("Too Close!!!\r\n"), 13);
       stopAll();
       return;
     }
