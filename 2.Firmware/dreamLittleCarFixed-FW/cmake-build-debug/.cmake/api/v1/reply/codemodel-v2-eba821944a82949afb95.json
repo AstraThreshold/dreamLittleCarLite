@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "dreamLittleCarFixed-FW",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "dreamLittleCarFixed-FW.elf::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dreamLittleCarFixed-FW.elf-Debug-970d4b60de2abca66ea0.json",
+					"name" : "dreamLittleCarFixed-FW.elf",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW/cmake-build-debug",
+		"source" : "D:/Projects/dreamLittleCarFixed/2.Firmware/dreamLittleCarFixed-FW"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
