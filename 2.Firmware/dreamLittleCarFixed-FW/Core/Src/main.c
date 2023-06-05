@@ -14,6 +14,12 @@
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
+  * CH -> 00 FF 46 -> MODE SWITCH
+  * - -> 00 FF 07 -> STOP
+  * 2 -> 00 FF 18 -> FORWARD
+  * 8 -> 00 FF 52 -> BACK
+  * 4 -> 00 FF 08 -> LEFT
+  * 6 -> 00 FF 5A -> RIGHT
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
