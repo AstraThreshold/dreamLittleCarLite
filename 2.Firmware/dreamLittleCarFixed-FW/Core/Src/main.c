@@ -108,7 +108,7 @@ int main(void)
   MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  pwmVal = 225;
+  pwmVal = 235;
 
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
@@ -194,7 +194,7 @@ void goForward()
 {
     __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�??
   //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�??
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal+5);    //修改比较值，修改占空�??
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-9);    //修改比较值，修改占空�??
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -271,12 +271,21 @@ void littleCarMove()
       return;
     }
 
-    if (TRACK2 == 0 && TRACK3 == 1)  turnLeft();
-    else if (TRACK2 == 1 && TRACK3 == 0) turnRight();
+    if (TRACK2 == 0 && TRACK3 == 1)
+    {
+      //stopAll();
+      turnLeft();
+    }
+    else if (TRACK2 == 1 && TRACK3 == 0)
+    {
+      //stopAll();
+      turnRight();
+    }
 
     else if (TRACK1 == 0 || TRACK4 == 0 || TRACK5 == 0)
     {
       stopAll();
+      HAL_Delay(1);
       if (TRACK1 == 0)  turnLeft();
       if (TRACK4 == 0)  turnRight();
       if (TRACK5 == 0)  turnRight();
