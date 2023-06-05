@@ -20,13 +20,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="牛了个b的，调通了大部分红外报文解码并融入主程序，增加红外模式切换并配备全套串口提示信息">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="77d18bab-fb9d-4f1f-98ba-0c17913acea2" name="更改" comment="红外遥控模式已经程序完备">
       <change beforePath="$PROJECT_DIR$/Core/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Src/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/dreamLittleCarFixed-FW.map" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686005100331</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="红外遥控模式已经程序完备">
+      <created>1686005635230</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1686005635230</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +210,7 @@
     <MESSAGE value="巡线算法调整基本成功，同时调通超声波避障，每10次Loop扫描一次，并蓝牙输出信息" />
     <MESSAGE value="通过串口解码出红外遥控的通信报文，准备加入红外遥控功能" />
     <MESSAGE value="牛了个b的，调通了大部分红外报文解码并融入主程序，增加红外模式切换并配备全套串口提示信息" />
-    <option name="LAST_COMMIT_MESSAGE" value="牛了个b的，调通了大部分红外报文解码并融入主程序，增加红外模式切换并配备全套串口提示信息" />
+    <MESSAGE value="红外遥控模式已经程序完备" />
+    <option name="LAST_COMMIT_MESSAGE" value="红外遥控模式已经程序完备" />
   </component>
 </project>

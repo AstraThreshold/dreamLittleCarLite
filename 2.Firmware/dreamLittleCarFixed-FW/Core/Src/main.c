@@ -159,7 +159,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  pwmVal = 235;
+  pwmVal = 230;
 
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
@@ -301,7 +301,7 @@ void goForward()
 {
     __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?????
   //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?????
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 13);    //修改比较值，修改占空�?????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 8);    //修改比较值，修改占空�?????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -474,7 +474,13 @@ void littleCarMove()
 
     if (firstTimeRun) //run anyway when on power.
     {
-      goForward();
+
+      __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�?????
+      __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�?????
+      HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
+      HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
+      HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
+      HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
       HAL_Delay(1500);
       firstTimeRun = 0;
     }
