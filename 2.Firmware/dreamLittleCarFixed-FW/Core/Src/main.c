@@ -39,6 +39,10 @@
 #define TRACK3 HAL_GPIO_ReadPin(TRACK_OUT3_GPIO_Port, TRACK_OUT3_Pin)
 #define TRACK4 HAL_GPIO_ReadPin(TRACK_OUT4_GPIO_Port, TRACK_OUT4_Pin)
 #define TRACK5 HAL_GPIO_ReadPin(TRACK_OUT5_GPIO_Port, TRACK_OUT5_Pin)
+
+#define sr04TrigHigh() HAL_GPIO_WritePin(SR04_TRIG_GPIO_Port,SR04_TRIG_Pin,GPIO_PIN_SET)
+#define sr04TrigLow()  HAL_GPIO_WritePin(SR04_TRIG_GPIO_Port,SR04_TRIG_Pin,GPIO_PIN_RESET)
+#define sr04Echo()  HAL_GPIO_ReadPin(SR04_ECHO_GPIO_Port,SR04_ECHO_Pin)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -52,6 +56,8 @@ uint16_t pwmVal = 1;
 float kp = 30;
 float ki = 1.3;
 float kd = 3.5;
+
+extern uint16_t msHcCount = 0;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -62,14 +68,29 @@ float kd = 3.5;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+
 /* USER CODE BEGIN PFP */
 void littleCarMove();
+
 void goForward();
+
 void turnLeft();
+
 void turnRight();
+
 void stopAll();
 
 float pidOutput();
+
+void sr04Init();
+
+void sr04TimerMode(uint8_t mode);
+
+float sr04GetDistant();
+
+float sr04GetDistantAfterFilter(uint8_t cnt);
+
+void delayus(uint32_t nus);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -107,33 +128,36 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
+  MX_TIM4_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+
   pwmVal = 235;
 
-  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
-  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  HAL_UART_Transmit(&huart1,"Ready!\r\n",sizeof("Ready!\r\n"),20);
-  HAL_UART_Transmit(&huart1,"Waiting...\r\n", sizeof("Waiting...\r\n"),20);
-  HAL_UART_Transmit(&huart1,"Motor Power:", sizeof("Motor Power:"),20);
+  HAL_UART_Transmit(&huart1, "Ready!\r\n", sizeof("Ready!\r\n"), 20);
+  HAL_UART_Transmit(&huart1, "Waiting...\r\n", sizeof("Waiting...\r\n"), 20);
+  HAL_UART_Transmit(&huart1, "Motor Power:", sizeof("Motor Power:"), 20);
   char powerMsg[10] = "";
   sprintf(powerMsg, "%.2f", 1000000.0 / pwmVal / 10000.0);
   HAL_UART_Transmit(&huart1, powerMsg, sizeof(powerMsg), 20);
 
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);
-  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-30);
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 30);
 
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    while ((msg != '1') && HAL_UART_Receive(&huart1,&msg,1,0) == HAL_OK);
+    while ((msg != '1') && HAL_UART_Receive(&huart1, &msg, 1, 0) == HAL_OK);
 
-    if (msg == '1' || !HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin))
+    if (msg == '1' || !HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin))
     {
       ifMsgGet = 1;
       msg = 0;
@@ -175,8 +199,8 @@ void SystemClock_Config(void)
   }
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+                                | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -189,12 +213,27 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void delayus(uint32_t nus)
+{
+  uint16_t differ = 0xffff - nus - 5;
+  //设置定时�?2的技术初始�??
+    __HAL_TIM_SetCounter(&htim4, differ);
+  //�?启定时器
+  HAL_TIM_Base_Start(&htim4);
+
+  while (differ < 0xffff - 5)
+  {
+    differ = __HAL_TIM_GetCounter(&htim4);
+  };
+  //关闭定时�?
+  HAL_TIM_Base_Stop(&htim4);
+}
 
 void goForward()
 {
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�??
-  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�??
-    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-9);    //修改比较值，修改占空�??
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal);    //修改比较值，修改占空�????
+  //__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal);    //修改比较值，修改占空�????
+    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal - 9);    //修改比较值，修改占空�????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
@@ -212,8 +251,8 @@ void stopAll()
 void turnLeft()
 {
   //电机2反转
-//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-50);    //修改比较值，修改占空�??
-//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal+30);    //修改比较值，修改占空�??
+//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-50);    //修改比较值，修改占空�????
+//    __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal+30);    //修改比较值，修改占空�????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 1);
@@ -224,13 +263,58 @@ void turnLeft()
 void turnRight()
 {
   //电机1反转
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�??
-//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-30);    //修改比较值，修改占空�??
+//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_4, pwmVal-40);    //修改比较值，修改占空�????
+//  __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, pwmVal-30);    //修改比较值，修改占空�????
   HAL_GPIO_WritePin(MOTOR1_CTRL1_GPIO_Port, MOTOR1_CTRL1_Pin, 1);
   HAL_GPIO_WritePin(MOTOR1_CTRL2_GPIO_Port, MOTOR1_CTRL2_Pin, 1);
   HAL_GPIO_WritePin(MOTOR2_CTRL1_GPIO_Port, MOTOR2_CTRL1_Pin, 0);
   HAL_GPIO_WritePin(MOTOR2_CTRL2_GPIO_Port, MOTOR2_CTRL2_Pin, 1);
   while (TRACK3 == 1);
+}
+
+void sr04Init()
+{
+  sr04TrigHigh();
+  delayus(20);
+  sr04TrigLow();
+}
+
+void sr04TimerMode(uint8_t mode)
+{
+  //mode=1-->open timer
+  //mode=0-->close timer
+  if (mode)
+  {
+      __HAL_TIM_SetCounter(&htim2, 0);
+    HAL_TIM_Base_Start(&htim2);
+    //HAL_TIM_Base_Start_IT(&htim2);
+    msHcCount = 0;
+  } else
+  {
+    HAL_TIM_Base_Stop(&htim2);
+    //HAL_TIM_Base_Stop_IT(&htim2);
+  }
+}
+
+float sr04GetDistant()
+{
+  sr04Init();
+  while (!sr04Echo());
+  sr04TimerMode(1);//start timer
+  while (sr04Echo());
+  sr04TimerMode(0);//stop timer
+
+  return (__HAL_TIM_GetCounter(&htim2)) / 58.0;
+}
+
+float sr04GetDistantAfterFilter(uint8_t cnt)
+{
+  float sum = 0;
+  for (int i = 0; i < cnt; i++)
+  {
+    sum += sr04GetDistant();
+  }
+  return sum / cnt;
 }
 
 float pidOutput()
@@ -257,16 +341,20 @@ float pidOutput()
   return output;
 }
 
+/*
+ 普�?�定时器实现us延时
+*/
+
 void littleCarMove()
 {
-  while(1)
+  while (1)
   {
-    HAL_UART_Receive(&huart1,&msg,1,10);
+    HAL_UART_Receive(&huart1, &msg, 1, 10);
 
     if (msg == '3') //emergency stop
     {
       msg = 0;
-      HAL_UART_Transmit(&huart1,"Stop!!!\r\n", sizeof("Stop!!!\r\n"),8);
+      HAL_UART_Transmit(&huart1, "Stop!!!\r\n", sizeof("Stop!!!\r\n"), 8);
       stopAll();
       return;
     }
@@ -275,27 +363,23 @@ void littleCarMove()
     {
       //stopAll();
       turnLeft();
-    }
-    else if (TRACK2 == 1 && TRACK3 == 0)
+    } else if (TRACK2 == 1 && TRACK3 == 0)
     {
       //stopAll();
       turnRight();
-    }
-
-    else if (TRACK1 == 0 || TRACK4 == 0 || TRACK5 == 0)
+    } else if (TRACK1 == 0 || TRACK4 == 0 || TRACK5 == 0)
     {
       stopAll();
       HAL_Delay(1);
-      if (TRACK1 == 0)  turnLeft();
-      if (TRACK4 == 0)  turnRight();
-      if (TRACK5 == 0)  turnRight();
-    }
-    else goForward();
+      if (TRACK1 == 0) turnLeft();
+      if (TRACK4 == 0) turnRight();
+      if (TRACK5 == 0) turnRight();
+    } else goForward();
 
 
     if (tickFlag == 1)
     {
-      HAL_UART_Transmit(&huart1,"Running...\r\n", sizeof("Running...\r\n"),8);
+      HAL_UART_Transmit(&huart1, "Running...\r\n", sizeof("Running...\r\n"), 8);
       tickFlag = 0;
     }
   }

@@ -92,6 +92,10 @@ void Error_Handler(void);
 #define HC05_RXD_GPIO_Port GPIOA
 #define HC05_TXD_Pin GPIO_PIN_10
 #define HC05_TXD_GPIO_Port GPIOA
+#define SR04_ECHO_Pin GPIO_PIN_5
+#define SR04_ECHO_GPIO_Port GPIOB
+#define SR04_TRIG_Pin GPIO_PIN_6
+#define SR04_TRIG_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
